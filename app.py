@@ -23,7 +23,7 @@ def load_assets():
 
 load_assets()
 
-# --- HTML / CSS Layout (Embedded directly) ---
+# --- HTML / CSS Layout ---
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -193,7 +193,7 @@ HTML_TEMPLATE = """
     </div>
 
     <div class="input-group">
-        <textarea id="textInput" placeholder="Enter text here (e.g., 'The product quality was outstanding and shipping was super fast!')..."></textarea>
+        <textarea id="textInput" placeholder="Enter text here..."></textarea>
         <button onclick="analyzeSentiment()">Analyze Sentiment</button>
     </div>
 
@@ -267,11 +267,11 @@ def predict():
     if not text:
         return jsonify({'error': 'No text provided'}), 400
 
-    # Vectorize and Predict
     transformed_text = vectorizer.transform([text])
     prediction = model.predict(transformed_text)[0]
 
     return jsonify({'sentiment': str(prediction)})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
